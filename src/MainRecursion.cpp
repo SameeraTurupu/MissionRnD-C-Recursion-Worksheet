@@ -2,7 +2,13 @@
 #include <stdlib.h>
 
 #include "FunctionHeaders.h"
-
+void generate_array(int **input_array, int rows, int columns, int seq)
+{
+	int k = 0;
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < columns; j++)
+			input_array[i][j] = (k++)*seq;
+}
 int main(){
 	
 	//Check NSnipers
@@ -15,8 +21,8 @@ int main(){
 
 	//Check Maze Sample Code
 
-	/*
-	int maze[4][3] = {
+	
+	/*int maze[4][3] = {
 		{ 0, 0, 1 },
 		{ 1, 1, 1 },
 		{ 1, 0, 1 },
@@ -29,7 +35,14 @@ int main(){
 	int check=path_exists(&maze[0][0], m, n, x1, y1, x2, y2);
 	printf("%d\n", check);
 	*/
+	int rows = 10, columns = 1;
 
-	
+	int **input_array = (int **)malloc(rows * sizeof(int *));
+
+	for (int i = 0; i < rows; i++)
+		input_array[i] = (int *)malloc(columns * sizeof(int));
+
+	generate_array((int**)input_array, rows, columns, -12);
+	int *output_array = spiral(rows, columns, (int**)input_array);
 	return 0;
 }

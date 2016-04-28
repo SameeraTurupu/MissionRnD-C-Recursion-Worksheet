@@ -41,8 +41,54 @@ Read :How to access elements in 2D array when its first element address is passe
 
 P.S: The Above Problem is just a modified version of a popular BackTracking problem .
 */
-
 #include "stdafx.h"
-int solve_nsnipers(int *battlefield, int n){
+
+int isSafe(int *field, int row, int columns, int n)
+{
+	int i = 0, j = 0;
+
+	for (i = 0; i < n; i++) {
+		if (*((field + row*n) + i) == 1)
+			return 0;
+	}
+	for (i = 0; i < n; i++){
+		if (*((field + i*n) + columns) == 1)
+			return 0;
+	}
+	for (i = row, j = columns; i >= 0 && j >= 0; i--, j--) {
+		if (*((field + i*n) + j) == 1)
+			return 0;
+	}
+	for (i = row, j = columns; j >= 0 && i < n; i++, j--) {
+		if (*((field + i*n) + j) == 1)
+			return 0;
+	}
+	return 1;
+}
+
+
+int PlaceSnipers(int *battlefield, int column, int n)
+{
+	if (column >= n) return 1;
+	for (int row_no = 0; row_no < n; row_no++)
+	{
+		if (isSafe(battlefield, row_no, column, n))
+		{
+			*((battlefield + row_no*n) + column) = 1;
+			if (PlaceSnipers(battlefield, column + 1, n))
+				return  1;
+			*((battlefield + row_no*n) + column) = 0;
+		}
+	}
 	return 0;
+}
+
+int solve_nsnipers(int *battlefield, int n)
+{
+	if (battlefield == NULL || n <= 0)
+		return 0;
+	else if (!(PlaceSnipers(battlefield, 0, n))) 
+		return  0;
+	else 
+		return 1;
 }

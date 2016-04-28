@@ -19,9 +19,9 @@ If input_array is NULL then return NULL.
 
 Example Input :
 int board[2][3]={
-				 {4,6,7},
-				 {1,3,8}
-				};
+{4,6,7},
+{1,3,8}
+};
 spiral(2,2,(int **)board); // Rows followed by columns followed by board
 
 Example Output : Return an array consisting of {4,6,7,8,3,1};
@@ -33,8 +33,38 @@ Note : Check the function Parameters ,Its a double pointer .
 
 #include "stdafx.h"
 #include<stdlib.h>
-
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+	if (input_array == NULL || rows <= 0 || columns <= 0)
+		return NULL;
+	int t = 0, r = rows - 1, L = 0, c = columns - 1, direction = 0;
+	int *arr = (int*)malloc((rows*columns)*sizeof(int));
+	int index = 0;
+
+	while (L <= c && t <= r)
+	{
+		if (direction == 0) 
+		{ 
+			for (int k = L; k <= c; k++)
+		       arr[index++] = input_array[t][k]; 
+		    t++;
+		}
+		else if (direction == 1) {
+			for (int k = t; k <= r; k++)
+				arr[index++] = input_array[k][c]; 
+			c--;
+		}
+		else if (direction == 2) {
+			for (int k = c; k >= L; k--) 
+				arr[index++] = input_array[r][k];
+			r--; 
+		}
+		else if (direction == 3) { 
+			for (int k = r; k >= t; k--) 
+				arr[index++] = input_array[k][L];
+			L++; 
+		}
+		direction = (direction + 1) % 4;
+	}
+	return arr;
 }
